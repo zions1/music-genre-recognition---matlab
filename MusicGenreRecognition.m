@@ -27,6 +27,8 @@ else
 	load au_ds.mat
 end
 
+
+
 %Test MFCC
 auFile=[auDir, '/metal/metal.00002.au'];
 figure;
