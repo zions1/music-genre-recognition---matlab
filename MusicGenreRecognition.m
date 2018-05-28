@@ -2,7 +2,8 @@ addpath('C:\Program Files\MATLAB\R2017a\toolbox\utility')
 addpath('C:\Program Files\MATLAB\R2017a\toolbox\sap')
 addpath('C:\Program Files\MATLAB\R2017a\toolbox\machineLearning')
 %addpath('C:\Program Files\MATLAB\R2017a\toolbox\machineLearning/externalTool/libsvm-3.21/matlab')	% For using SVM classifier
-extension = 'flac';
+
+extension = 'au';
 auDir=['C:/Users/Donski/Desktop/thesis/genres/genres_', extension];
 opt=mmDataCollect('defaultOpt');
 opt.extName=extension;
@@ -37,15 +38,14 @@ rng(1)      %For reproducibility
 %---------- KNN ---------
 fprintf('\nK-Nearest Neighbors algorithm starts at %s\n', char(datetime));
 [train, test, trainDesired, testDesired] = createTrainAndTestSets(input, desired, trainSize);
-knn(test, testDesired, outputNames, 0);
+knn(train, trainDesired, test, testDesired, outputNames, 1);
 fprintf('K-Nearest Neighbors algorithm finished at %s\n', char(datetime));
 %------------------------
 
 
-
 %Test MFCC
 auFile=[auDir, '/metal/metal.00002.', extension];
-figure;
+%figure;
 mgcFeaExtract(auFile, [], 0);
 
 %figure; dsFeaVecPlot(ds); figEnlarge;
