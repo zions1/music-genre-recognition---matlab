@@ -1,15 +1,23 @@
-function knn(train, trainDesired, test, testDesired, outputName, showPlot)
+function [accuracy, confMat] = knn(train, trainDesired, test, testDesired, outputName, showPlot)
 
-Mdl = fitcknn(train,trainDesired,'NumNeighbors',10,'Standardize',1);
+Mdl = fitcknn(train,trainDesired,'NumNeighbors',3,'Standardize',1);
 
 [label,~,~] = predict(Mdl,test);
 error = sum(label - testDesired ~= 0) / length(testDesired);
-fprintf('Accurancy = %g%% for testing data set.\n', (1-error)*100)
+accuracy = (1-error)*100;
+confMat = confMatGet(testDesired, label');
 
+% Plot the confusion matrix of classification result.
 if showPlot
-    figure;
-    confMat1 = confMatGet(testDesired, label');
-    cmOpt1=confMatPlot('defaultOpt');
-    cmOpt1.className=outputName;
-    confMatPlot(confMat1, cmOpt1); figEnlarge;
+    
+    %confMat = confMatGet(desired, computed);
+    opt=confMatPlot('defaultOpt');
+    opt.className=outputName;
+    opt.mode='both';
+    figure; confMatPlot(confMat, opt);
+    
+%     figure;    
+%     cmOpt1=confMatPlot('defaultOpt');
+%     cmOpt1.className=outputName;
+%     confMatPlot(confMat, cmOpt1); figEnlarge;
 end

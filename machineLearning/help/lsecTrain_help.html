@@ -1,0 +1,141 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>lsecTrain</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-04-14"><meta name="DC.source" content="lsecTrain_help.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>lsecTrain</h1><!--introduction--><p>Training the LSE (least-square estimate) classifier (LSEC)</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Description</a></li><li><a href="#3">Example</a></li><li><a href="#5">See Also</a></li></ul></div><h2 id="1">Syntax</h2><div><ul><li>cPrm=qcTrain(DS)</li><li>cPrm=qcTrain(DS, opt)</li><li>[cPrm, logLike, recogRate, hitIndex]=qcTrain(DS, opt, showPlot)</li><li>DS: data set for training</li><li>opt: parameters for training</li><li>showPlot: 1 for plotting</li><li>cPrm: the parameters for LSEC.</li><li>recogRate: R-square for linear regression</li><li>hitIndex: index of the correctly classified data points</li></ul></div><h2 id="2">Description</h2><p>
+<p>cPrm=lsecTrain(DS) returns the parameters of the least-square estimate (LSE) classifier based on the given dataset DS.
+<p>cPrm=lsecTrain(DS, opt) uses the train parameters opt for training the LSEC.
+<p>cPrm=lsecTrain(DS, opt, showPlot) plots the decision boundary of the LSEC (if the feature dimensionity is 2).
+<p>[cPrm, logLike, recogRate, hitIndex]=qcTrain(DS, ...) also returns the log likelihood, recognition rate, and the hit indice of data instances in DS.
+</p><h2 id="3">Example</h2><pre class="codeinput">DS=prData(<span class="string">'iris'</span>);
+DS.input=DS.input(3:4, :);
+trainSet.input=DS.input(:, 1:2:end); trainSet.output=DS.output(:, 1:2:end);
+ testSet.input=DS.input(:, 2:2:end);  testSet.output=DS.output(:, 2:2:end);
+[cPrm, logLike1, R1]=lsecTrain(trainSet);
+[computedClass, logLike2, R2]=lsecEval(testSet, cPrm, 1);
+fprintf(<span class="string">'Inside R-square = %g\n'</span>, R1);
+fprintf(<span class="string">'Outside R-square = %g\n'</span>, R2);
+</pre><pre class="codeoutput error">Reference to non-existent field 'class'.
+
+Error in classifierPlot (line 119)
+classNum=length(cPrm.class);
+
+Error in classifierEval (line 257)
+	classifierPlot(classifier, DS, cPrm, 'decBoundary');
+
+Error in lsecEval (line 39)
+[computedClass, logLike, recogRate, hitIndex]=classifierEval(classifier, DS, cPrm, showPlot);
+
+Error in lsecTrain_help (line 29)
+[computedClass, logLike2, R2]=lsecEval(testSet, cPrm, 1);
+</pre><h2 id="5">See Also</h2><p><a href="lsecEval_help.html">lsecEval</a>.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% lsecTrain
+% Training the LSE (least-square estimate) classifier (LSEC)
+%% Syntax
+% * 		cPrm=qcTrain(DS)
+% * 		cPrm=qcTrain(DS, opt)
+% * 		[cPrm, logLike, recogRate, hitIndex]=qcTrain(DS, opt, showPlot)
+% * 			DS: data set for training
+% * 			opt: parameters for training
+% * 			showPlot: 1 for plotting
+% * 			cPrm: the parameters for LSEC.
+% * 			recogRate: R-square for linear regression
+% * 			hitIndex: index of the correctly classified data points
+%% Description
+%
+% <html>
+% <p>cPrm=lsecTrain(DS) returns the parameters of the least-square estimate (LSE) classifier based on the given dataset DS.
+% <p>cPrm=lsecTrain(DS, opt) uses the train parameters opt for training the LSEC.
+% <p>cPrm=lsecTrain(DS, opt, showPlot) plots the decision boundary of the LSEC (if the feature dimensionity is 2).
+% <p>[cPrm, logLike, recogRate, hitIndex]=qcTrain(DS, ...) also returns the log likelihood, recognition rate, and the hit indice of data instances in DS.
+% </html>
+%% Example
+%%
+%
+DS=prData('iris');
+DS.input=DS.input(3:4, :);
+trainSet.input=DS.input(:, 1:2:end); trainSet.output=DS.output(:, 1:2:end);
+ testSet.input=DS.input(:, 2:2:end);  testSet.output=DS.output(:, 2:2:end);
+[cPrm, logLike1, R1]=lsecTrain(trainSet);
+[computedClass, logLike2, R2]=lsecEval(testSet, cPrm, 1);
+fprintf('Inside R-square = %g\n', R1);
+fprintf('Outside R-square = %g\n', R2);
+%% See Also
+% <lsecEval_help.html lsecEval>.
+
+##### SOURCE END #####
+--><hr><a href="index.html">Top page</a>&nbsp;&nbsp;&nbsp;Next: <a href="lsecEval_help.html">lsecEval.m</a>&nbsp;&nbsp;&nbsp;Prev:<a href="mfccOptSet_help.html">mfccOptSet.m</a>
+<script>
+function keyFunction(){
+if (event.keyCode==37) document.location="lsecEval_help.html";
+if (event.keyCode==39) document.location="mfccOptSet_help.html";
+if (event.keyCode==69) document.location="matlab: edit lsecTrain.m";
+}
+document.onkeydown=keyFunction;
+</script>
+</body></html>

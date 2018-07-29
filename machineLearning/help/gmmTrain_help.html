@@ -1,0 +1,224 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>gmmTrain</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-04-14"><meta name="DC.source" content="gmmTrain_help.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>gmmTrain</h1><!--introduction--><p>GMM training for parameter identification</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Description</a></li><li><a href="#3">Example</a></li><li><a href="#5">See Also</a></li></ul></div><h2 id="1">Syntax</h2><div><ul><li>gmmModel = gmmTrain(data, gmmOpt)</li><li>gmmModel = gmmTrain(data, gmmOpt, showPlot)</li><li>[gmmModel, logLike] = gmmTrain(...)</li><li>gmmOpt = gmmTrain('defaultOpt');</li></ul></div><h2 id="2">Description</h2><p>
+<p>gmmModel = gmmTrain(data, opt) performs GMM training and returns the parameters in gmmModel. I/O arguments are as follows:
+	<ul>
+	<li>data: dim x dataNum matrix where each column is a data point
+	<li>opt: gmm options for architecture and training
+		<ul>
+		<li>opt.arch.gaussianNum: No. of Gaussians
+		<li>opt.arch.covType: Type of covariance matrix
+		<li>opt.train.showInfo: Displaying info during training
+		<li>opt.train.useKmeans: Use k-means to find initial centers
+		<li>opt.train.maxIteration: Max. number of iterations
+		<li>opt.train.minImprove: Min. improvement over the previous iteration
+		<li>opt.train.minVariance: Min. variance for each mixture
+		<li>opt.train.usePartialVectorization specifies the use of vectorized operations, as follows:
+			<ul>
+			<li>0 for fully vectorized operation
+			<li>1 (default) for partial vectorized operation (which is slower but uses less memory)
+			</ul>
+		</ul>
+	<li>gmmModel: The final model for GMM
+	</ul>
+<p>[gmmModel, logLike] = gmmTrain(data, opt) also returns the log likelihood during the training process.
+<p>For demos, please refer to
+	<ul>
+	<li>1-d example: gmmTrainDemo1d.
+	<li>2-d example: gmmTrainDemo2dCovType01.m, gmmTrainDemo2dCovType02.m, and gmmTrainDemo2dCovType03.
+	</ul>
+<p>Note that opt.arch determines the architecture of GMM, which is then used to determine the initial GMM parameters by gmmInitPrmSet.m. In fact, opt.arch could be a valid GMM parameters that specify the GMM architecture directly. On the other hand, opt.train determines the parameters for training.
+</p><h2 id="3">Example</h2><pre class="codeinput">DS=dcData(2);
+trainingData=DS.input;
+opt=gmmTrain(<span class="string">'defaultOpt'</span>);
+opt.arch.gaussianNum=8;
+opt.arch.covType=1;
+opt.train.useKmeans=0;
+opt.train.showInfo=1;
+opt.train.maxIteration=50;
+[gmmModel, logLike]=gmmTrain(trainingData, opt, 1);
+</pre><pre class="codeoutput">	GMM iteration: 0/50, log likelihood. = -1997.223797
+	GMM iteration: 1/50, log likelihood. = -1799.300922
+	GMM iteration: 2/50, log likelihood. = -1719.550669
+	GMM iteration: 3/50, log likelihood. = -1647.302470
+	GMM iteration: 4/50, log likelihood. = -1591.922539
+	GMM iteration: 5/50, log likelihood. = -1553.622591
+	GMM iteration: 6/50, log likelihood. = -1524.830939
+	GMM iteration: 7/50, log likelihood. = -1499.946429
+	GMM iteration: 8/50, log likelihood. = -1481.403436
+	GMM iteration: 9/50, log likelihood. = -1470.172323
+	GMM iteration: 10/50, log likelihood. = -1463.621026
+	GMM iteration: 11/50, log likelihood. = -1459.556456
+	GMM iteration: 12/50, log likelihood. = -1456.812704
+	GMM iteration: 13/50, log likelihood. = -1454.829078
+	GMM iteration: 14/50, log likelihood. = -1453.337862
+	GMM iteration: 15/50, log likelihood. = -1452.193497
+	GMM iteration: 16/50, log likelihood. = -1451.303229
+	GMM iteration: 17/50, log likelihood. = -1450.602274
+	GMM iteration: 18/50, log likelihood. = -1450.043743
+	GMM iteration: 19/50, log likelihood. = -1449.593268
+	GMM iteration: 20/50, log likelihood. = -1449.225488
+	GMM iteration: 21/50, log likelihood. = -1448.921559
+	GMM iteration: 22/50, log likelihood. = -1448.667368
+	GMM iteration: 23/50, log likelihood. = -1448.452240
+	GMM iteration: 24/50, log likelihood. = -1448.268023
+	GMM iteration: 25/50, log likelihood. = -1448.108426
+	GMM iteration: 26/50, log likelihood. = -1447.968543
+	GMM iteration: 27/50, log likelihood. = -1447.844511
+	GMM iteration: 28/50, log likelihood. = -1447.733264
+	GMM iteration: 29/50, log likelihood. = -1447.632341
+	GMM iteration: 30/50, log likelihood. = -1447.539756
+	GMM iteration: 31/50, log likelihood. = -1447.453888
+	GMM iteration: 32/50, log likelihood. = -1447.373408
+	GMM iteration: 33/50, log likelihood. = -1447.297216
+	GMM iteration: 34/50, log likelihood. = -1447.224392
+	GMM iteration: 35/50, log likelihood. = -1447.154165
+	GMM iteration: 36/50, log likelihood. = -1447.085875
+	GMM iteration: 37/50, log likelihood. = -1447.018960
+	GMM iteration: 38/50, log likelihood. = -1446.952931
+	GMM iteration: 39/50, log likelihood. = -1446.887358
+	GMM iteration: 40/50, log likelihood. = -1446.821861
+	GMM iteration: 41/50, log likelihood. = -1446.756100
+	GMM iteration: 42/50, log likelihood. = -1446.689764
+	GMM iteration: 43/50, log likelihood. = -1446.622570
+	GMM iteration: 44/50, log likelihood. = -1446.554253
+	GMM iteration: 45/50, log likelihood. = -1446.484569
+	GMM iteration: 46/50, log likelihood. = -1446.413286
+	GMM iteration: 47/50, log likelihood. = -1446.340186
+	GMM iteration: 48/50, log likelihood. = -1446.265064
+	GMM iteration: 49/50, log likelihood. = -1446.187726
+	GMM total iteration count = 50, log likelihood. = -1446.107992
+</pre><img vspace="5" hspace="5" src="gmmTrain_help_01.png" alt=""> <img vspace="5" hspace="5" src="gmmTrain_help_02.png" alt=""> <h2 id="5">See Also</h2><p><a href="gmmEval_help.html">gmmEval</a>, <a href="gmmPlot_help.html">gmmPlot</a>, <a href="gmmInitPrmSet_help.html">gmmInitPrmSet</a>.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% gmmTrain
+% GMM training for parameter identification
+%% Syntax
+% * 		gmmModel = gmmTrain(data, gmmOpt)
+% * 		gmmModel = gmmTrain(data, gmmOpt, showPlot)
+% * 		[gmmModel, logLike] = gmmTrain(...)
+% * 		gmmOpt = gmmTrain('defaultOpt');
+%% Description
+%
+% <html>
+% <p>gmmModel = gmmTrain(data, opt) performs GMM training and returns the parameters in gmmModel. I/O arguments are as follows:
+% 	<ul>
+% 	<li>data: dim x dataNum matrix where each column is a data point
+% 	<li>opt: gmm options for architecture and training
+% 		<ul>
+% 		<li>opt.arch.gaussianNum: No. of Gaussians
+% 		<li>opt.arch.covType: Type of covariance matrix
+% 		<li>opt.train.showInfo: Displaying info during training
+% 		<li>opt.train.useKmeans: Use k-means to find initial centers
+% 		<li>opt.train.maxIteration: Max. number of iterations
+% 		<li>opt.train.minImprove: Min. improvement over the previous iteration
+% 		<li>opt.train.minVariance: Min. variance for each mixture
+% 		<li>opt.train.usePartialVectorization specifies the use of vectorized operations, as follows:
+% 			<ul>
+% 			<li>0 for fully vectorized operation
+% 			<li>1 (default) for partial vectorized operation (which is slower but uses less memory)
+% 			</ul>
+% 		</ul>
+% 	<li>gmmModel: The final model for GMM
+% 	</ul>
+% <p>[gmmModel, logLike] = gmmTrain(data, opt) also returns the log likelihood during the training process.
+% <p>For demos, please refer to
+% 	<ul>
+% 	<li>1-d example: gmmTrainDemo1d.
+% 	<li>2-d example: gmmTrainDemo2dCovType01.m, gmmTrainDemo2dCovType02.m, and gmmTrainDemo2dCovType03.
+% 	</ul>
+% <p>Note that opt.arch determines the architecture of GMM, which is then used to determine the initial GMM parameters by gmmInitPrmSet.m. In fact, opt.arch could be a valid GMM parameters that specify the GMM architecture directly. On the other hand, opt.train determines the parameters for training.
+% </html>
+%% Example
+%%
+%
+DS=dcData(2);
+trainingData=DS.input;
+opt=gmmTrain('defaultOpt');
+opt.arch.gaussianNum=8;
+opt.arch.covType=1;
+opt.train.useKmeans=0;
+opt.train.showInfo=1;
+opt.train.maxIteration=50;
+[gmmModel, logLike]=gmmTrain(trainingData, opt, 1);
+%% See Also
+% <gmmEval_help.html gmmEval>,
+% <gmmPlot_help.html gmmPlot>,
+% <gmmInitPrmSet_help.html gmmInitPrmSet>.
+
+##### SOURCE END #####
+--><hr><a href="index.html">Top page</a>&nbsp;&nbsp;&nbsp;Next: <a href="gmmRead_help.html">gmmRead.m</a>&nbsp;&nbsp;&nbsp;Prev:<a href="gmmWrite_help.html">gmmWrite.m</a>
+<script>
+function keyFunction(){
+if (event.keyCode==37) document.location="gmmRead_help.html";
+if (event.keyCode==39) document.location="gmmWrite_help.html";
+if (event.keyCode==69) document.location="matlab: edit gmmTrain.m";
+}
+document.onkeydown=keyFunction;
+</script>
+</body></html>

@@ -1,0 +1,17 @@
+inputSelectExhaustive.m:	allRecogRate(i)=perfLoo(DS2, classifier, param);
+inputSelectSequential.m:			recogRate(j)=perfLoo(DS2, classifier, param);
+lda.m:%		fprintf('LOO accuracy of KNNC over the original %s dataset = %g%%\n', dsName, 100*perfLoo(ds, 'knnc'));
+lda.m:%		fprintf('LOO accuracy of KNNC over the %s dataset projected onto the first two LDA vectors = %g%%\n', dsName, 100*perfLoo(ds12, 'knnc'));
+lda.m:%		fprintf('LOO accuracy of KNNC over the %s dataset projected onto the last two LDA vectors = %g%%\n', dsName, 100*perfLoo(ds34, 'knnc'));
+perfCv4classifier.m:		%	rr=perfLoo(DS3, perfData(i).classifier);
+perfLoo.m:function [recogRate, computedClass]=perfLoo(DS, classifier, classifierOpt, showPlot)
+perfLoo.m:%		recogRate=perfLoo(DS, classifier, classifierOpt)
+perfLoo.m:%		recogRate=perfLoo(DS, classifier, classifierOpt, showPlot)
+perfLoo.m:%		[recogRate, computedClass]=perfLoo(...)
+perfLoo.m:%		recogRate=perfLoo(DS, classifier, classifierOpt) returns the leave-one-out recognition rate of the given dataset and classifier.
+perfLoo.m:%		recogRate=perfLoo(DS, classifier, classifierOpt, 1) also plots the dataset and misclasified instances (if the dimension is 2).
+perfLoo.m:%		[recogRate, computedClass]=perfLoo(...) also returns the computed class of each data instance in DS.
+perfLoo.m:%		[recogRate, computed] = perfLoo(DS, 'knnc', [], showPlot);
+ttt.m: 		fprintf('LOO accuracy of KNNC over the original %s dataset = %g%%\n', dsName, 100*perfLoo(ds, 'knnc'));
+ttt.m: 		fprintf('LOO accuracy of KNNC over the %s dataset projected onto the first two lda vectors = %g%%\n', dsName, 100*perfLoo(ds12, 'knnc'));
+ttt.m: 		fprintf('LOO accuracy of KNNC over the %s dataset projected onto the last two lda vectors = %g%%\n', dsName, 100*perfLoo(ds34, 'knnc'));
