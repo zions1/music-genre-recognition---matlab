@@ -7,5 +7,4 @@ for i=1:1:length(h)
 end
 legend('ECOC', 'KNN'),
 ylabel('Accuracy [%]'), xlabel('Number of training data'), grid on;
-
 end

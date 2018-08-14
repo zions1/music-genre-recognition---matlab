@@ -1,10 +1,7 @@
 function [fea, mfcc]=feaExtract(au, opt, showPlot)
 
 if nargin<3, showPlot=0; end
-
-if ischar(au)
-    au=customAudioRead(au); 
-end
+if ischar(au), au=customAudioRead(au); end
 
 %---------MFCC----------
 mfccOpt=mfccOptSet(au.fs);

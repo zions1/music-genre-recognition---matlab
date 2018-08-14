@@ -1,10 +1,9 @@
-clear all;
+clear;
+addpath('machineLearning')  %Path to external library
 
-%addpath('utility')
-addpath('machineLearning')
-
-format = 'flac';	% Format: 'wav', 'mp3' and 'flac'
-auDir=['C:/Users/Donski/Desktop/thesis/genres/genres_', format];
+format = 'flac';	%Format: 'wav', 'mp3' and 'flac'
+%Path to music genres collections
+auDir=['C:/Users/Donski/Desktop/thesis cranfield/music-genre-recognision-matlab/genres/genres_', format];
 opt=mmDataCollect('defaultOpt');
 opt.extName=format;
 auSet=mmDataCollect(auDir, opt, 1);
@@ -19,8 +18,8 @@ if exist(dataSetFileName, 'file')
 	load(dataSetFileName)
 else
 	opt=dsCreateFromMm('defaultOpt');
-	opt.auFeaFcn=@feaExtract;% Function for feature extraction
-	opt.auEpdFcn='';            % No need to do endpoint detection
+	opt.auFeaFcn=@feaExtract;   %Feature extraction
+	opt.auEpdFcn='';            %No-endpoint detection
 	ds=dsCreateFromMm(auSet, opt, 1);
 	fprintf('Saving dataset.mat file\n');
 	save(dataSetFileName, 'ds')
@@ -37,7 +36,7 @@ fprintf('\nK-Nearest Neighbors algorithm starts');
 tic;    % Start timer
 [train, test, trainDesired, testDesired] = createTrainAndTestSets(input, desired, trainSize);
 [knnAccuracy, confMat] = knn(train, trainDesired, test, testDesired, outputNames, 1);
-knnTime = toc;  % Stop timer
+knnTime = toc;  %Stop timer
 %musicGenresBarChart(confMat, outputNames, 'KNN')
 fprintf('\nAccuracy: %g; time: %g sec', knnAccuracy, knnTime);
 fprintf('\nK-Nearest Neighbors algorithm finished');
@@ -46,8 +45,8 @@ rng(10) %For reproducibility
 %--------- ECOC - SVM ---------
 fprintf('\nError-correcting output coding algorithm starts');
 tic;    % Start timer
-[ecocAccuracy, confMat] = ecoc(input, desired, outputNames, trainSize, 0);
-ecocTime = toc; % Stop timer
+[ecocAccuracy, confMat] = ecoc(input, desired, outputNames, trainSize, 1);
+ecocTime = toc; %Stop timer
 fprintf('\nAccuracy: %g time: %g sec', ecocAccuracy, ecocTime);
 %musicGenresBarChart(confMat, outputNames, 'ECOC');
 fprintf('\nError-correcting output coding algorithm finished');

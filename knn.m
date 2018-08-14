@@ -9,15 +9,8 @@ confMat = confMatGet(testDesired, label');
 
 % Plot the confusion matrix of classification result.
 if showPlot
-    
-    %confMat = confMatGet(desired, computed);
     opt=confMatPlot('defaultOpt');
     opt.className=outputName;
     opt.mode='both';
     figure; confMatPlot(confMat, opt);
-    
-%     figure;    
-%     cmOpt1=confMatPlot('defaultOpt');
-%     cmOpt1.className=outputName;
-%     confMatPlot(confMat, cmOpt1); figEnlarge;
 end
